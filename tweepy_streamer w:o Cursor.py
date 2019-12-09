@@ -6,11 +6,13 @@ LucidProgramming in Youtube.
 """
 
 # Libraries
-#from tweepy import API 
-#from tweepy import Cursor
+
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+from operator import itemgetter
+import json
+import csv
 
 import twitter_credentials
 
@@ -52,9 +54,23 @@ class TwitterListener(StreamListener):
     
     def on_data(self, data):
         try:
-            print(data)
-            with open(self.fetched_tweets_filename, 'a') as tf:
-                tf.write(data)
+            # excluding retweets in tweet output
+            decoded = json.loads(data)
+            if not decoded['text'].startswith('RT'):
+                print(data)                # printing complete tweets containing hash_tag_list in console for checking
+                header = ['created_at', 'text', 'user']
+                required_cols = itemgetter(*header)
+                
+                with open(self.fetched_tweets_filename, 'a') as tf:
+                    tf.write(data)
+                    
+                with open(self.fetched_tweets_filename) as f_input, open(output_file, 'w') as f_output:
+                    csv_output = csv.writer(f_output)
+                    csv_output.writerow(header)
+                    
+                    for row in f_input:
+                        if row.strip():
+                            csv_output.writerow(required_cols(json.loads(row)))
             return True
         except BaseException as e:
             print("Error on_data: %s" % str(e))
@@ -70,7 +86,8 @@ class TwitterListener(StreamListener):
 if __name__ == "__main__":
     
     hash_tag_list =["flu"]
-    fetched_tweets_filename = "tweets1.json"
+    fetched_tweets_filename = "tweets2.json"
+    output_file = 'tweets.csv'
     
     twitter_streamer = TwitterStreamer()
     twitter_streamer.stream_tweets(fetched_tweets_filename, hash_tag_list)
