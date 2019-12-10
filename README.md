@@ -14,7 +14,7 @@ Objective for the
 4. Create front-end visualization of findings
 
 ## Tasks 12/9
-- Kai: work on converting the CSV file
-— Brian: extracting of historical data
-— Aji: Work on the sentiment analysis algorithm
-— CPLSA(time, context) 
+1. Kai: work on converting the CSV file
+2. Brian: extracting of historical data
+3. Aji: Work on the sentiment analysis algorithm
+4. CPLSA(time, context) 
