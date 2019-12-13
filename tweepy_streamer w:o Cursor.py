@@ -94,7 +94,7 @@ class TwitterListener(StreamListener):
 
 
 if __name__ == "__main__":
-    hash_tag_list = ["flu", "influenza", "flushot", "fluvaccine", "sneeze"]
+    hash_tag_list = ["#flu", "#influenza", "#flushot", "#fluvaccine", "#sneeze"]
     fetched_tweets_filename = "tweets2.json"
     output_file = 'tweets.csv'
 
