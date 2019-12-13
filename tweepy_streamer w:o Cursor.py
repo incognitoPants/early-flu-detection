@@ -62,7 +62,7 @@ class TwitterListener(StreamListener):
             if not decoded['text'].startswith('RT'):
                 print(data)  # printing complete tweets containing hash_tag_list in console for checking
                 # columns to capture
-                headers = ['user.created_at', 'user.screen_name', 'lang', 'text']
+                headers = ['created_at', 'user.screen_name', 'lang', 'text']
 
                 # No need to append to JSON - not really viable for appending
                 # Convert captured data and append to CSV as needed
