@@ -61,7 +61,8 @@ class TwitterListener(StreamListener):
             # RT indicates retweet, this section omits those tweets
             if not decoded['text'].startswith('RT'):
                 print(data)  # printing complete tweets containing hash_tag_list in console for checking
-                # header = ['user.created_at', user.screen_name, 'lang', 'text', 'user.id'] # user.id is a test
+                # columns to capture
+                headers = ['user.created_at', 'user.screen_name', 'lang', 'text']
 
                 # No need to append to JSON - not really viable for appending
                 # Convert captured data and append to CSV as needed
@@ -73,12 +74,12 @@ class TwitterListener(StreamListener):
                     # If it does, then append without headers
                     try:
                         df = pandas.read_csv(output_file)
-                        decoded_res.to_csv(output_file, mode='a', header=False)
+                        decoded_res.to_csv(output_file, mode='a', columns = headers, header=False, index = False)
 
                     # Empty data exception - file does not exist yet
                     # Create CSV and include headers!
                     except EmptyDataError:
-                        decoded_res.to_csv(output_file, header=True)
+                        decoded_res.to_csv(output_file, columns = headers, header = True, index = False)
 
             return True
         except BaseException as e:
