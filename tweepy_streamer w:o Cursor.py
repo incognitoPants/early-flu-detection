@@ -10,13 +10,10 @@ LucidProgramming in Youtube.
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-from operator import itemgetter
 import json
-import csv
 from pandas.io.json import json_normalize
 from pandas.io.common import EmptyDataError
 import pandas
-
 import twitter_credentials
 
 
@@ -64,7 +61,7 @@ class TwitterListener(StreamListener):
             # RT indicates retweet, this section omits those tweets
             if not decoded['text'].startswith('RT'):
                 print(data)  # printing complete tweets containing hash_tag_list in console for checking
-                # header = ['created_at', 'text', 'user.id'] # user.id is a test
+                # header = ['user.created_at', user.screen_name, 'lang', 'text', 'user.id'] # user.id is a test
 
                 # No need to append to JSON - not really viable for appending
                 # Convert captured data and append to CSV as needed
@@ -96,7 +93,7 @@ class TwitterListener(StreamListener):
 
 
 if __name__ == "__main__":
-    hash_tag_list = ["flu"]
+    hash_tag_list = ["flu", "influenza", "flushot", "fluvaccine", "sneeze"]
     fetched_tweets_filename = "tweets2.json"
     output_file = 'tweets.csv'
 
