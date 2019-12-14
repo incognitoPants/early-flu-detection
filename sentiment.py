@@ -90,13 +90,12 @@ class TweetAnalyzer():
     """"
     Analyzes and categorizes tweets
     """
-
+    # cleans the tweet by removing mentions, special characters, and unwanted characters
     def tidy_tweet(self, tweet):
         return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
 
     # uses the in-built sentiment analysis tool to analyze tweets
     def sentiment_analyzer(self, tweet):
-        # analysis = TextBlob(self.clean_tweet(tweet))
         analysis = TextBlob(self.tidy_tweet(tweet))
 
         if analysis.sentiment.polarity > 0:
@@ -121,12 +120,13 @@ if __name__ == "__main__":
 
     twitter_client = TwitterClient()
     tweet_analyzer = TweetAnalyzer()
-
+    # Makes an instance object to be able to call the twitter api
     api = twitter_client.get_twitter_client_api()
-
+    # pulls 20 tweets from the timeline of "CDC's" twitter account
     tweets = api.user_timeline(screen_name="CDCgov", count=20)
-
+    # Creates a dataframe for the extracted tweets
     df = tweet_analyzer.tweets_to_data_frame(tweets)
+    # creates a dataframe for the sentiment column on each tweet pulled in the timeline
     df['sentiment'] = np.array([tweet_analyzer.sentiment_analyzer(tweet) for tweet in df["tweets"]])
 
     print(df.head(10))
