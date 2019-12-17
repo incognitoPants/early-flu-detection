@@ -1,6 +1,8 @@
 # ignore twitter keys
 twitter_key.py
 twitter_credentials.py
+twitter_keys.yaml
+
 
 # ignore csv and json files
 tweets.csv
