@@ -35,17 +35,13 @@ Implementation:
 """
 
 # Libraries
-from os import path
-import json
-from pandas.io.json import json_normalize
 import pandas
 import twitter_credentials
-
-
-from textblob import TextBlob
+import json
 import re
-
-
+from os import path
+from pandas.io.json import json_normalize
+from textblob import TextBlob
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
@@ -101,52 +97,31 @@ class TwitterListener(StreamListener):
 
                 # No need to append to JSON - not really viable for appending
                 # Convert captured data and append to CSV as needed
-                with open(output_file, 'a') as f_output:
-                    # Flatten captured JSON
-                    decoded_res = json_normalize(decoded, max_level = 1)
 
-                    # Check if CSV file already exists
-                    # If it does, then append without headers
-                    #try:
-                    if not path.exists('tweets.csv'):
-                        existing_file = pandas.read_csv(output_file)
-                        # sentiment analysis
-                        # remove mentions, special characters, and unwanted characters from tweet
-                        tweet = str(decoded_res['text'])
-                        tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
-                        #  Analyze the tweet's polarity
-                        s = TextBlob(tweet)
-                        if s.sentiment.polarity > 0:
-                            snt = 'positive'
-                        elif s.sentiment.polarity == 0:
-                            snt = 'neutral'
-                        else:
-                            snt = 'negative'
+                decoded_res = json_normalize(decoded, max_level = 1)
+                # remove mentions, special characters, and unwanted characters from tweet
+                tweet = str(decoded_res['text'])
+                tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+                #  Analyze the tweet's polarity
+                s = TextBlob(tweet)
+                if s.sentiment.polarity > 0:
+                    snt = 'positive'
+                elif s.sentiment.polarity == 0:
+                    snt = 'neutral'
+                else:
+                    snt = 'negative'
 
-                        # add sentiment column to data frame
-                        decoded_res['sentiment'] = snt
-                        #output data frame values to CSV without headers
-                        decoded_res.to_csv(output_file, mode='a', columns = headers, header=False, index = False)
-
-                    # Empty data exception - file does not exist yet
-                    # Create CSV and include headers!
-                    else:
-                        # remove mentions, special characters  from tweet
-                        tweet = str(decoded_res['text'])
-                        tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
-                        # Analyze the tweet
-                        s = TextBlob(tweet)
-                        if s.sentiment.polarity > 0:
-                            snt = 'positive'
-                        elif s.sentiment.polarity == 0:
-                            snt = 'neutral'
-                        else:
-                            snt = 'negative'
-
-                        # add sentiment column
-                        decoded_res['sentiment'] = snt
-                        # output data frame values to CSV file with headers
-                        decoded_res.to_csv(output_file, columns = headers, header = True, index = False)
+                # add sentiment column to data frame
+                decoded_res['sentiment'] = snt
+                # output data frame values to CSV without headers
+                # if it exists...
+                try:
+                    df = pandas.read_csv(output_file)
+                    # print(decoded_res)
+                    decoded_res.to_csv(output_file, mode='a', columns=headers, header=False, index=False)
+                #if it doesn't...
+                except FileNotFoundError:
+                    decoded_res.to_csv(output_file, columns=headers, header=True, index=False)
 
             return True
         except BaseException as e:
