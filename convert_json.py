@@ -4,12 +4,16 @@ import json
 from pandas.io.json import json_normalize
 import pandas as pd
 
-with open("/Users/idris/Downloads/data1.json") as f:
+# Change this as needed!
+input_file = "/Users/idris/Downloads/data1.json"
+
+with open(input_file) as f:
     j_file = json.load(f)
     j_norm = json_normalize(j_file, max_level = 1)
 
 # remove tweets starting with "RT"
 j_norm = j_norm[~j_norm.text.str.startswith('RT ')]
+
 
 headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment']
 snt_list = []
