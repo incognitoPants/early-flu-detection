@@ -13,6 +13,8 @@ with open(input_file) as f:
 
 # remove tweets starting with "RT"
 j_norm = j_norm[~j_norm.text.str.startswith('RT ')]
+# remove tweets not lang = en
+j_norm = j_norm[j_norm.lang == 'en']
 
 
 headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment']
