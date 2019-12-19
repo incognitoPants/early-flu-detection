@@ -30,6 +30,7 @@ For future users:
 # Libraries
 from searchtweets import ResultStream, gen_rule_payload, load_credentials
 from searchtweets import collect_results
+import json
 
 premium_search_args = load_credentials("twitter_keys.yaml",
                                        yaml_key="search_tweets_api",
@@ -41,4 +42,20 @@ tweets = collect_results(rule,
                          result_stream_args=premium_search_args)  # change this if you need to
 
 
-print(rule)
+#print(rule)
+print(type(tweets))
+print(tweets)
+with open('data.json', 'w') as f:
+    json.dump(tweets, f)
+
+
+# storing in json file
+with open('data_file.json', 'w', encoding='utf-8') as f:
+    n = 0
+    for tweet in tweets:
+        n += 1
+        if n% 20 == 0:
+            print('{0}: {1}'.format(str(n), tweet['created_at']))
+        json.dump(tweet, f)
+        f.write('\n')
+print('done')

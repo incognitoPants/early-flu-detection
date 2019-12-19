@@ -2,7 +2,6 @@ from textblob import TextBlob
 import pandas as pd
 import re
 
-
 file = "tweets_ns.csv" # replace with the CSV you want to add sentiment
 df = pd.read_csv(file)
 snt_list = []
@@ -22,4 +21,6 @@ for tweet in df["text"]:
 
     snt_list.append(snt)
 df["sentiment"] = snt_list
+
+# headers will not be included since the CSV's already have them.
 df.to_csv("tweets_added_sentiment.csv", mode='w', index=False)

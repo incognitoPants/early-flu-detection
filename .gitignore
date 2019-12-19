@@ -7,3 +7,7 @@ twitter_keys.yaml
 # ignore csv and json files
 tweets.csv
 tweets2.json
+tweets_ns.csv
+tweets_json_sentiment.csv
+data_file.json
+data.json

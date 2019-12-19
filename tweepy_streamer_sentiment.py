@@ -90,38 +90,39 @@ class TwitterListener(StreamListener):
             decoded = json.loads(data)
 
             # RT indicates retweet, this section omits those tweets
-            if not decoded['text'].startswith('RT'):
-                print(data)  # printing complete tweets containing hash_tag_list in console for checking
-                # columns to capture
-                headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment']
+            if decoded['lang'].startswith('en'):
+                if not decoded['text'].startswith('RT'):
+                    print(data)  # printing complete tweets containing hash_tag_list in console for checking
+                    # columns to capture
+                    headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment']
 
-                # No need to append to JSON - not really viable for appending
-                # Convert captured data and append to CSV as needed
+                    # No need to append to JSON - not really viable for appending
+                    # Convert captured data and append to CSV as needed
 
-                decoded_res = json_normalize(decoded, max_level = 1)
-                # remove mentions, special characters, and unwanted characters from tweet
-                tweet = str(decoded_res['text'])
-                tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
-                #  Analyze the tweet's polarity
-                s = TextBlob(tweet)
-                if s.sentiment.polarity > 0:
-                    snt = 'positive'
-                elif s.sentiment.polarity == 0:
-                    snt = 'neutral'
-                else:
-                    snt = 'negative'
+                    decoded_res = json_normalize(decoded, max_level = 1)
+                    # remove mentions, special characters, and unwanted characters from tweet
+                    tweet = str(decoded_res['text'])
+                    tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
+                    #  Analyze the tweet's polarity
+                    s = TextBlob(tweet)
+                    if s.sentiment.polarity > 0:
+                        snt = 'positive'
+                    elif s.sentiment.polarity == 0:
+                        snt = 'neutral'
+                    else:
+                        snt = 'negative'
 
-                # add sentiment column to data frame
-                decoded_res['sentiment'] = snt
-                # output data frame values to CSV without headers
-                # if it exists...
-                try:
-                    df = pandas.read_csv(output_file)
-                    # print(decoded_res)
-                    decoded_res.to_csv(output_file, mode='a', columns=headers, header=False, index=False)
-                #if it doesn't...
-                except FileNotFoundError:
-                    decoded_res.to_csv(output_file, columns=headers, header=True, index=False)
+                    # add sentiment column to data frame
+                    decoded_res['sentiment'] = snt
+                    # output data frame values to CSV without headers
+                    # if it exists...
+                    try:
+                        df = pandas.read_csv(output_file)
+                        # print(decoded_res)
+                        decoded_res.to_csv(output_file, mode='a', columns=headers, header=False, index=False)
+                    #if it doesn't...
+                    except FileNotFoundError:
+                        decoded_res.to_csv(output_file, columns=headers, header=True, index=False)
 
             return True
         except BaseException as e:
