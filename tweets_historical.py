@@ -32,18 +32,22 @@ from searchtweets import ResultStream, gen_rule_payload, load_credentials
 from searchtweets import collect_results
 import json
 
+file_name='data.json'
+FROM_DATE='2019-11-18 00:00' 
+TO_DATE='2019-12-18 00:00'
+
 premium_search_args = load_credentials("twitter_keys.yaml",
                                        yaml_key="search_tweets_api",
                                        env_overwrite=False)
 
 rule = gen_rule_payload("#flu", 
-                        from_date='2019-11-18 00:00',
-                        to_date='2019-12-18 00:00',
+                        from_date=FROM_DATE,
+                        to_date=TO_DATE,
                         results_per_call=100)  # change the query (first param) as needed
 
 tweets = collect_results(rule,
                          max_results=100,
                          result_stream_args=premium_search_args)  # change this if you need to
 
-with open('data.json', 'w') as f:
+with open(file_name, 'w') as f:
     json.dump(tweets, f, indent=4)
