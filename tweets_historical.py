@@ -36,10 +36,14 @@ premium_search_args = load_credentials("twitter_keys.yaml",
                                        yaml_key="search_tweets_api",
                                        env_overwrite=False)
 
-rule = gen_rule_payload("#flu", results_per_call=100)  # change the query (first param) as needed
+rule = gen_rule_payload("#flu", 
+                        from_date='2019-11-18 00:00',
+                        to_date='2019-12-18 00:00',
+                        results_per_call=100)  # change the query (first param) as needed
+
 tweets = collect_results(rule,
                          max_results=100,
                          result_stream_args=premium_search_args)  # change this if you need to
 
 with open('data.json', 'w') as f:
-    json.dump(tweets, f)
+    json.dump(tweets, f, indent=4)
