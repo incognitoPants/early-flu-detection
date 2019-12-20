@@ -14,8 +14,8 @@ from textblob import TextBlob
 import pandas as pd
 import re
 
-input_file = 'Input/tweets_ns2.csv' # replace with the CSV you want to add sentiment
-output_name = 'tweets_added_sentiment1.csv'
+input_file = 'Input/tweets_recent.csv' # replace with the CSV you want to add sentiment
+output_name = 'tweets_recent.csv'
 output_file = 'Output/' + output_name
 lang_filter = 'en'
 df = pd.read_csv(input_file)
@@ -24,9 +24,11 @@ df = pd.read_csv(input_file)
 df = df[df.lang == 'en']
 
 snt_list = []
+snt_p_list = []
 for tweet in df['text']:
     tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
     s = TextBlob(tweet)
+    snt_p = round(s.sentiment.polarity, 4)
     if s.sentiment.polarity > 0:
         snt = 'positive'
     elif s.sentiment.polarity == 0:
@@ -34,8 +36,10 @@ for tweet in df['text']:
     else:
         snt = 'negative'
 
+    snt_p_list.append(snt_p)
     snt_list.append(snt)
-df["sentiment"] = snt_list
+df['sentiment'] = snt_list
+df['polarity'] = snt_p_list
 
 # headers will not be included since the CSV's already have them.
 df.to_csv(output_file, mode='w', index=False)

@@ -36,26 +36,10 @@ premium_search_args = load_credentials("twitter_keys.yaml",
                                        yaml_key="search_tweets_api",
                                        env_overwrite=False)
 
-rule = gen_rule_payload("#flu", results_per_call=100)  # testing with a sandbox account
+rule = gen_rule_payload("#flu", results_per_call=100)  # change the query (first param) as needed
 tweets = collect_results(rule,
                          max_results=100,
                          result_stream_args=premium_search_args)  # change this if you need to
 
-
-#print(rule)
-print(type(tweets))
-print(tweets)
 with open('data.json', 'w') as f:
     json.dump(tweets, f)
-
-
-# storing in json file
-with open('data_file.json', 'w', encoding='utf-8') as f:
-    n = 0
-    for tweet in tweets:
-        n += 1
-        if n% 20 == 0:
-            print('{0}: {1}'.format(str(n), tweet['created_at']))
-        json.dump(tweet, f)
-        f.write('\n')
-print('done')

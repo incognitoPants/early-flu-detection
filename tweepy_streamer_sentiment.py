@@ -17,19 +17,20 @@ Modified Code Purpose:
 
 Implementation:
     The captured tweets are returned as a JSON, then flattened into a Pandas data frame.
-    Data from of your four columns are extrapolated into a data frame:
+    Data from four columns are extrapolated into a data frame:
         - created_at (when the tweet was created)
         - user.screen_name (twitter handle of the user posting the tweet)
         - lang (language of tweet)
         - text (actual tweet)
 
-    The text of the tweet is stripped of any special characters and user mentions before analyzing its sentiment.
+    The text of the tweet is stripped of any special characters, unwanted characters, and user mentions before
+    analyzing its sentiment.
     We are ranking sentiment as follows:
         polarity > 0 is positive
         polarity == 0 is neutral
         polarity < 0 is negative
 
-    The sentiment column is added to the data frame before appending it to a CSV to the local machine. If the CSV
+    The sentiment column is added to the data frame before appending it to a CSV in the local machine. If the CSV
     file does not exist, it will create it and add headers for the columns.
 
 """
@@ -39,7 +40,6 @@ import pandas
 import twitter_credentials
 import json
 import re
-from os import path
 from pandas.io.json import json_normalize
 from textblob import TextBlob
 from tweepy.streaming import StreamListener
@@ -94,7 +94,7 @@ class TwitterListener(StreamListener):
                 if not decoded['text'].startswith('RT'):
                     print(data)  # printing complete tweets containing hash_tag_list in console for checking
                     # columns to capture
-                    headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment']
+                    headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment','polarity']
 
                     # No need to append to JSON - not really viable for appending
                     # Convert captured data and append to CSV as needed
@@ -105,6 +105,7 @@ class TwitterListener(StreamListener):
                     tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
                     #  Analyze the tweet's polarity
                     s = TextBlob(tweet)
+                    snt_p = round(s.sentiment.polarity, 4)
                     if s.sentiment.polarity > 0:
                         snt = 'positive'
                     elif s.sentiment.polarity == 0:
@@ -112,8 +113,9 @@ class TwitterListener(StreamListener):
                     else:
                         snt = 'negative'
 
-                    # add sentiment column to data frame
+                    # add sentiment & polarity columns to data frame
                     decoded_res['sentiment'] = snt
+                    decoded_res['polarity'] = snt_p
                     # output data frame values to CSV without headers
                     # if it exists...
                     try:

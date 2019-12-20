@@ -21,7 +21,7 @@ from pandas.io.json import json_normalize
 import pandas as pd
 
 addr = "Input/"
-output_name = "tweets_json_converted.csv"
+output_name = "tweets_json_converted_all_lang.csv"
 
 with open("Input/input_files.txt") as f_in:
     for line in f_in:
@@ -34,25 +34,29 @@ with open("Input/input_files.txt") as f_in:
         # remove tweets starting with "RT"
         j_norm = j_norm[~j_norm.text.str.startswith('RT ')]
         # remove tweets not lang = en
-        j_norm = j_norm[j_norm.lang == 'en']
+        # j_norm = j_norm[j_norm.lang == 'en']
 
 
-        headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment']
+        headers = ['created_at', 'user.screen_name', 'lang', 'text', 'sentiment', 'polarity']
         snt_list = []
+        snt_p_list = []
         for tweet in j_norm['text']:
             if not tweet.startswith('RT'):
                 tweet = ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split())
                 #  Analyze the tweet's polarity
                 s = TextBlob(tweet)
+                snt_p = round(s.sentiment.polarity, 4)
                 if s.sentiment.polarity > 0:
                     snt = 'positive'
                 elif s.sentiment.polarity == 0:
                     snt = 'neutral'
                 else:
                     snt = 'negative'
+                snt_p_list.append(snt_p)
                 snt_list.append(snt)
 
         j_norm["sentiment"] = snt_list
+        j_norm["polarity"] = snt_p_list
         output_file = "Output/" + output_name
         try:
             df = pd.read_csv(output_file)
