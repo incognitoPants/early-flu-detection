@@ -7,7 +7,7 @@
 
 ## Project Purpose:
 
-[Github Project Link](https://github.com/incognitoPants/cs410-project-19)
+[Github Project Link](https://github.com/incognitoPants/early-flu-detection)
 
 This project is meant to help someone build and create a stream in order to see if
 tweets from Twitter can be used as a signal for an early or late Influenza season.
@@ -16,8 +16,7 @@ By capturing tweets over time and comparing both volume and tabulating sentiment
 hope it will act as a useful signal to determine if the Flu / Influenza season is
 starting sooner or later than expected. 
 
-[Tableau Visualization of Results](https://github.com/twitterdev/search-tweets-python)  
-
+[Tableau Visualization of Results](https://public.tableau.com/views/SentimentAnalysisViz_15768034428880/SentimentAnalysisontwitterstreams?:display_count=y&:origin=viz_share_link)  
 ***
 
 ## Features:
