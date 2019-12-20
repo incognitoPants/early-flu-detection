@@ -21,8 +21,9 @@ used to find anomalies and trends in recent tweets and compare them to historica
 data.
 
 [Tableau Visualization of Results]
-One will need a Tableau Public account to view Dashboard
 (https://public.tableau.com/views/SentimentAnalysisViz_15768034428880/SentimentAnalysisontwitterstreams?:display_count=y&:origin=viz_share_link)  
+
+One will need a Tableau Public account to view Dashboard
 ***
 
 ## Features:
