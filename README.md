@@ -1,17 +1,22 @@
-# cs410-project-19
-## Project Title: Early Influenza Detection
+# UIUC CS 410, Fall 2019 Project
+## Early Influenza Detection
 ## Members:
-* Aji Fatou Dibba
-* Kai Bogdanovich
-* Brian Maeng
+* Aji Fatou Dibba (adibba2)
+* Kai Bogdanovich (erikabb2)
+* Brian Maeng (jooyolm2)
 
 ## Project Purpose:
+
+[Github Project Link](https://github.com/incognitoPants/cs410-project-19)
+
 This project is meant to help someone build and create a stream in order to see if
 tweets from Twitter can be used as a signal for an early or late Influenza season.
 
 By capturing tweets over time and comparing both volume and tabulating sentiment, we
 hope it will act as a useful signal to determine if the Flu / Influenza season is
 starting sooner or later than expected. 
+
+[Tableau Visualization of Results](https://github.com/twitterdev/search-tweets-python)  
 
 ***
 
@@ -25,8 +30,8 @@ starting sooner or later than expected.
 
 ## Requirements:
 ### Environment:
-This project was created using Python 3.7. This does not guarantee compatibility with other
-versions.   
+This project was created using Python 3.7. Using a different version of Python does guarantee
+compatibility with existing code or libraries.
 
 ### Required Libraries:
 Please see ```requirements.txt``` for all required libraries. The most important libraries
@@ -40,6 +45,9 @@ to install are the following:
 
 **Tweepy**  
 ```pip3 install tweepy```
+
+**Search Tweets**  
+```pip3 install searchtweets```
 
 ### Twitter Developer Account
 In order to use the streaming functionality, you will need a twitter developer account
@@ -131,3 +139,8 @@ this by adding a file in `Input/input_files.txt`.
 4. The converted JSON files will be merged into one file in the `Ouput` directory.  
 *Note: You can change the variable `output_name` to customize the output filename*
 
+## Sources:
+Much of our code was built on concepts and ideas from the following projects:
+* [Twitter Python - By LucidProgramming](https://github.com/vprusso/youtube_tutorials/tree/master/twitter_python
+)
+* [Python Twitter Search API](https://github.com/twitterdev/search-tweets-python)
