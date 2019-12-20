@@ -16,6 +16,10 @@ By capturing tweets over time and comparing both volume and tabulating sentiment
 hope it will act as a useful signal to determine if the Flu / Influenza season is
 starting sooner or later than expected. 
 
+For our purpose, we visualized the results of our findings using Tableau. This can be
+used to find anomalies and trends in recent tweets and compare them to historical
+data.
+
 [Tableau Visualization of Results](https://public.tableau.com/views/SentimentAnalysisViz_15768034428880/SentimentAnalysisontwitterstreams?:display_count=y&:origin=viz_share_link)  
 ***
 
