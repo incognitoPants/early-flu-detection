@@ -1,9 +1,9 @@
 # UIUC CS 410, Fall 2019 Project
 ## Early Influenza Detection
 ## Members:
-* Aji Fatou Dibba (adibba2)
-* Kai Bogdanovich (erikabb2)
-* Brian Maeng (jooyolm2)
+* Aji Fatou Dibba
+* Kai Bogdanovich
+* Brian Maeng 
 
 ## Project Purpose:
 
